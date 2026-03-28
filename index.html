@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise Animation</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  h1, h2, p {
+    margin: 20px 0;
+    opacity: 0;
+    transition: opacity 1s, transform 1s;
+  }
+
+  .show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hide {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  /* I LOVE YOU rain */
+  .iloveyou {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: fall 5s linear forwards;
+  }
+
+  @keyframes fall {
+    0% { top: -30px; opacity: 1; }
+    100% { top: 100vh; opacity: 0; }
+  }
+
+  /* Kisses animation */
+  .kiss {
+    font-size: 30px;
+    position: absolute;
+    opacity: 0;
+    animation: kissAnim 1s forwards;
+  }
+
+  @keyframes kissAnim {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Cake */
+  .cake-container {
+    position: relative;
+    width: 200px;
+    margin: 30px auto;
+  }
+
+  .cake {
+    width: 200px;
+    height: 150px;
+    background: #ff9999;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  .cake.show { opacity:1; }
+
+  .candle {
+    width: 10px;
+    height: 40px;
+    background: yellow;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+  }
+
+  .flame {
+    width: 10px;
+    height: 10px;
+    background: orange;
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    left: 0;
+    animation: flicker 0.3s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.3); }
+  }
+
+  .cut {
+    position: absolute;
+    width: 200px;
+    height: 75px;
+    background: #ffe0e0;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    animation: cutCake 2s forwards;
+    display: none;
+  }
+
+  @keyframes cutCake {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-45deg) translate(50px,50px); opacity: 1; }
+  }
+
+  /* Tom & Jerry animations */
+  .tom, .jerry {
+    position: absolute;
+    width: 100px;
+    bottom: 50px;
+    opacity: 0;
+  }
+
+  .run {
+    animation: runAnim 3s forwards;
+  }
+
+  @keyframes runAnim {
+    0% { left: -120px; opacity: 1; }
+    100% { left: 50%; opacity: 1; }
+  }
+
+  .hug {
+    animation: hugAnim 2s forwards;
+  }
+
+  @keyframes hugAnim {
+    0% { transform: scale(1) translateX(0); opacity: 1; }
+    100% { transform: scale(1.2) translateX(-20px); opacity: 1; }
+  }
+
+  /* Confetti */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    animation: confettiFall 5s linear infinite;
+  }
+
+  @keyframes confettiFall {
+    0% { top: -10px; transform: rotate(0deg); }
+    100% { top: 100vh; transform: rotate(360deg); }
+  }
+
+</style>
+</head>
+<body>
+
+<h1 id="happyBirthday">🎉 Happy Birthday, Shayan! 🎉</h1>
+<h2 id="personalMsg">Wishing you all the happiness in the world ❤️</h2>
+
+<div id="iloveyouContainer"></div>
+<div id="kissContainer"></div>
+
+<div class="cake-container">
+  <div class="cake" id="cake">
+    <div class="candle">
+      <div class="flame"></div>
+    </div>
+  </div>
+  <div class="cut" id="cut"></div>
+</div>
+
+<img src="https://i.ibb.co/FxTZb4b/tom.png" class="tom" id="tom" alt="Tom">
+<img src="https://i.ibb.co/YZ6h4kF/jerry.png" class="jerry" id="jerry" alt="Jerry">
+
+<script>
+const hb = document.getElementById('happyBirthday');
+const msg = document.getElementById('personalMsg');
+const iloveyouContainer = document.getElementById('iloveyouContainer');
+const kissContainer = document.getElementById('kissContainer');
+const cut = document.getElementById('cut');
+const cake = document.getElementById('cake');
+const tom = document.getElementById('tom');
+const jerry = document.getElementById('jerry');
+
+function showElement(el){
+  el.classList.add('show');
+}
+
+function hideElement(el){
+  el.classList.remove('show');
+}
+
+// Sequence
+let delay = 500;
+
+// 1️⃣ Happy Birthday
+setTimeout(()=> showElement(hb), delay);
+delay += 3000;
+setTimeout(()=> hideElement(hb), delay);
+
+// 2️⃣ Personal message
+delay += 1000;
+setTimeout(()=> showElement(msg), delay);
+delay += 3000;
+setTimeout(()=> hideElement(msg), delay);
+
+// 3️⃣ I LOVE YOU rain
+delay += 1000;
+setTimeout(()=>{
+  let count = 0;
+  const interval = setInterval(()=>{
+    const span = document.createElement('div');
+    span.className='iloveyou';
+    span.style.left = Math.random()*window.innerWidth+'px';
+    span.textContent='I LOVE YOU ❤️';
+    iloveyouContainer.appendChild(span);
+    setTimeout(()=> span.remove(), 5000);
+    count++;
+    if(count>10) clearInterval(interval);
+  }, 300);
+}, delay);
+
+// 4️⃣ Kisses 💋
+delay += 4000;
+setTimeout(()=>{
+  for(let i=0;i<10;i++){
+    setTimeout(()=>{
+      const kiss = document.createElement('div');
+      kiss.className='kiss';
+      kiss.style.left = (50+i*15)+'px';
+      kiss.style.bottom='150px';
+      kiss.textContent='💋';
+      kissContainer.appendChild(kiss);
+    }, i*400);
+  }
+}, delay);
+
+// 5️⃣ Emotional lines
+delay += 5000;
+setTimeout(()=>{
+  const p = document.createElement('p');
+  p.className='show';
+  p.textContent='You mean the world to me ❤️';
+  document.body.appendChild(p);
+}, delay);
+
+// 6️⃣ Cake appear
+delay += 3000;
+setTimeout(()=> cake.classList.add('show'), delay);
+
+// 7️⃣ Cake cutting
+delay += 2000;
+setTimeout(()=>{
+  cut.style.display='block';
+  cut.classList.add('cut');
+}, delay);
+
+// 8️⃣ Tom & Jerry run
+delay += 2000;
+setTimeout(()=>{
+  tom.classList.add('run');
+  jerry.classList.add('run');
+}, delay);
+
+// 9️⃣ Tom & Jerry hug
+delay += 4000;
+setTimeout(()=>{
+  tom.classList.add('hug');
+  jerry.classList.add('hug');
+}, delay);
+
+// 10️⃣ Confetti
+delay += 2500;
+setTimeout(()=>{
+  for(let i=0;i<50;i++){
+    const conf = document.createElement('div');
+    conf.className='confetti';
+    conf.style.left=Math.random()*window.innerWidth+'px';
+    conf.style.backgroundColor=`hsl(${Math.random()*360},80%,60%)`;
+    conf.style.width = conf.style.height = (5+Math.random()*10)+'px';
+    document.body.appendChild(conf);
+  }
+}, delay);
+
+</script>
+</body>
+  </html>
